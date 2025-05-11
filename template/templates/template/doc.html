@@ -1,0 +1,156 @@
+<script>
+                                                                                 // Sample data
+                                                                                 const subjects = {
+                                                                                     "School / Madrasah": [
+                                                                                         "Agriculture (312)",
+                                                                                         "Arabic (301)",
+                                                                                         "Bangla (302)",
+                                                                                         "Biology (306)",
+                                                                                         "Business Studies (307)"
+                                                                                     ],
+                                                                                     "College": [
+                                                                                         "Accounting (401)",
+                                                                                         "Agriculture (412)",
+                                                                                         "Arabic (421)"
+                                                                                     ],
+                                                                                     "Technical": [
+                                                                                         "Computer (501)",
+                                                                                         "Electrical (502)",
+                                                                                         "Civil (503)"
+                                                                                     ]
+                                                                                 };
+                                                                                 
+                                                                                 // Sample merit list data
+                                                                                 const meritListData = [
+                                                                                     { sl: 1, level: "School / Madrasah", subject: "Agriculture", merit: 1, exam: 7, roll: "31209210", name: "Ranjita Roy" },
+                                                                                     { sl: 2, level: "School / Madrasah", subject: "Agriculture", merit: 2, exam: 14, roll: "31214999", name: "TANJIMA RAHMAN" },
+                                                                                     { sl: 3, level: "School / Madrasah", subject: "Agriculture", merit: 2, exam: 17, roll: "312010666", name: "AMINUL ISLAM" },
+                                                                                     { sl: 4, level: "School / Madrasah", subject: "Agriculture", merit: 4, exam: 10, roll: "31235551", name: "MST. REHENA PARVIN" },
+                                                                                     { sl: 5, level: "School / Madrasah", subject: "Agriculture", merit: 4, exam: 14, roll: "31216308", name: "MD. JAMAL UDDIN" },
+                                                                                     { sl: 6, level: "School / Madrasah", subject: "Agriculture", merit: 4, exam: 14, roll: "31223692", name: "SHIRINA KHATUN" },
+                                                                                     { sl: 7, level: "School / Madrasah", subject: "Agriculture", merit: 7, exam: 10, roll: "31235596", name: "MD. SUMON MIAH" },
+                                                                                     { sl: 8, level: "School / Madrasah", subject: "Agriculture", merit: 7, exam: 14, roll: "31211612", name: "SRITI RANI SEN" },
+                                                                                     { sl: 9, level: "School / Madrasah", subject: "Agriculture", merit: 7, exam: 14, roll: "31211639", name: "MST. SHANAZ PERVIN" },
+                                                                                     { sl: 10, level: "School / Madrasah", subject: "Agriculture", merit: 7, exam: 17, roll: "312011037", name: "TAHMINA SADIA JAMINI" },
+                                                                                     // Generate more sample data for other subjects and levels
+                                                                                     { sl: 11, level: "School / Madrasah", subject: "Agriculture", merit: 8, exam: 10, roll: "31236001", name: "FARID AHMED" },
+                                                                                     { sl: 12, level: "School / Madrasah", subject: "Agriculture", merit: 8, exam: 14, roll: "31218562", name: "NASIMA AKTER" }
+                                                                                 ];
+                                                                                 
+                                                                                 // Function to handle level change
+                                                                                 function handleLevelChange() {
+                                                                                     const levelSelect = document.getElementById('levelSelect');
+                                                                                     const subjectSelect = document.getElementById('subjectSelect');
+                                                                                     const meritListContainer = document.getElementById('meritListContainer');
+                                                                                     
+                                                                                     // Clear subject dropdown
+                                                                                     subjectSelect.innerHTML = '<option value=">Select Subject</option>';
+                                                                                     
+                                                                                     if (levelSelect.value) {
+                                                                                         // Enable subject dropdown
+                                                                                         subjectSelect.disabled = false;
+                                                                                         
+                                                                                         // Populate subject dropdown based on selected level
+                                                                                         const levelSubjects = subjects[levelSelect.value] || [];
+                                                                                         levelSubjects.forEach(subject => {
+                                                                                             const option = document.createElement('option');
+                                                                                             option.value = subject;
+                                                                                             option.textContent = subject;
+                                                                                             subjectSelect.appendChild(option);
+                                                                                         });
+                                                                                     } else {
+                                                                                         // Disable subject dropdown if no level selected
+                                                                                         subjectSelect.disabled = true;
+                                                                                         meritListContainer.style.display = 'none';
+                                                                                     }
+                                                                                 }
+                                                                                 
+                                                                                 // Function to load data based on selections
+                                                                                 function loadData() {
+                                                                                     const levelSelect = document.getElementById('levelSelect');
+                                                                                     const subjectSelect = document.getElementById('subjectSelect');
+                                                                                     const meritListContainer = document.getElementById('meritListContainer');
+                                                                                     const tableBody = document.getElementById('tableBody');
+                                                                                     const meritListTitle = document.getElementById('meritListTitle');
+                                                                                     const searchInput = document.getElementById('searchInput');
+                                                                                     const entriesSelect = document.getElementById('entriesSelect');
+                                                                                     const showingEntries = document.getElementById('showingEntries');
+                                                                                     
+                                                                                     if (levelSelect.value && subjectSelect.value) {
+                                                                                         // Show merit list container
+                                                                                         meritListContainer.style.display = 'block';
+                                                                                         
+                                                                                         // Update merit list title
+                                                                                         meritListTitle.textContent = 'Merit List of ' + subjectSelect.value;
+                                                                                         
+                                                                                         // Clear table body
+                                                                                         tableBody.innerHTML = '';
+                                                                                         
+                                                                                         // Filter data based on selections and search
+                                                                                         const searchTerm = searchInput.value.toLowerCase();
+                                                                                         let filteredData = meritListData.filter(item => {
+                                                                                             const subjectName = subjectSelect.value.split(' (')[0];
+                                                                                             return item.level === levelSelect.value && 
+                                                                                                    item.subject === subjectName &&
+                                                                                                    (searchTerm === '' || item.roll.toLowerCase().includes(searchTerm));
+                                                                                         });
+                                                                                         
+                                                                                         // Get entries count
+                                                                                         const entriesCount = parseInt(entriesSelect.value);
+                                                                                         
+                                                                                         // Update showing entries text
+                                                                                         showingEntries.textContent = `Showing 1 to ${Math.min(entriesCount, filteredData.length)} of ${filteredData.length} entries`;
+                                                                                         
+                                                                                         // Show only the selected number of entries
+                                                                                         filteredData = filteredData.slice(0, entriesCount);
+                                                                                         
+                                                                                         // Populate table
+                                                                                         filteredData.forEach(item => {
+                                                                                             const row = document.createElement('tr');
+                                                                                             row.innerHTML = `
+                                                                                                 <td>${item.sl}</td>
+                                                                                                 <td>${item.level}</td>
+                                                                                                 <td>${item.subject}</td>
+                                                                                                 <td>${item.merit}</td>
+                                                                                                 <td>${item.exam}</td>
+                                                                                                 <td>${item.roll}</td>
+                                                                                                 <td>${item.name}</td>
+                                                                                             `;
+                                                                                             tableBody.appendChild(row);
+                                                                                         });
+                                                                                     } else {
+                                                                                         // Hide merit list container if selections are incomplete
+                                                                                         meritListContainer.style.display = 'none';
+                                                                                     }
+                                                                                 }
+                                                                                 
+                                                                                 // Add event listeners for pagination buttons
+                                                                                 document.getElementById('prevButton').addEventListener('click', function(e) {
+                                                                                     e.preventDefault();
+                                                                                     // Implement previous page functionality
+                                                                                 });
+                                                                                 
+                                                                                 document.getElementById('nextButton').addEventListener('click', function(e) {
+                                                                                     e.preventDefault();
+                                                                                     // Implement next page functionality
+                                                                                 });
+                                                                                 
+                                                                                 // Initialize with Agriculture subject selected when the page loads
+                                                                                 window.onload = function() {
+                                                                                     const levelSelect = document.getElementById('levelSelect');
+                                                                                     levelSelect.value = "School / Madrasah";
+                                                                                     handleLevelChange();
+                                                                                     
+                                                                                     const subjectSelect = document.getElementById('subjectSelect');
+                                                                                     setTimeout(() => {
+                                                                                         // Select Agriculture subject by default after level selection
+                                                                                         for (let i = 0; i < subjectSelect.options.length; i++) {
+                                                                                             if (subjectSelect.options[i].text.includes("Agriculture")) {
+                                                                                                 subjectSelect.selectedIndex = i;
+                                                                                                 break;
+                                                                                             }
+                                                                                         }
+                                                                                         loadData();
+                                                                                     }, 100);
+                                                                                 };
+                                                                              </script>

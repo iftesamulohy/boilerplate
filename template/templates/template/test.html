@@ -1,0 +1,70 @@
+<div style="    background: white;padding: 50px 40px 30px 40px  ;">
+    <div class="container">
+    <h1 class="h1">COMBINED NATIONAL MERIT LIST FOR 1-17 AND 2010 SPECIAL EXAMS.</h1>
+    <p class="subtitle">(NTRCA certificate holders obtaining same marks in written examination (optional subject) have been shown in same merit position)</p>
+    <div class="filter-container">
+        <select id="levelSelect" onchange="handleLevelChange()">
+            <option value="">Select Level</option>
+            <option value="2">School / Madrasah</option>
+            <option value="3">School2 / Madrasah / Technical</option>
+            <option value="4">College/Madrasah/ BM</option>
+        </select>
+        <select id="subjectSelect" disabled onchange="loadData()">
+            <option value="">Select Subject</option>
+                </select>
+                </div>
+                <div id="meritListContainer" style="display: none; border:1px solid #ddd">
+                <div class="merit-list-header">
+                <span id="meritListTitle">Merit List of </span>
+                </div>
+                <div class="controls">
+                <div class="show-entries">
+                    <span>Show</span>
+        <select id="entriesSelect" style="width: 70px; margin: 0 5px;" onchange="loadData()">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        </select>
+        <span>entries</span>
+        </div>
+        <div class="search-box">
+        <label for="searchInput">Search:</label>
+        <input type="text" id="searchInput" placeholder="Enter roll number" oninput="loadData()">
+        </div>
+        </div>
+        <div style="padding:0 20px">
+            <table id="meritTable">
+                <thead>
+                <tr>
+                    <th>SL</th>
+                    <th>Level</th>
+                    <th>Subject</th>
+                    <th>Merit</th>
+                    <th>Exam</th>
+                    <th>Roll</th>
+                    <th>Name</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody">
+                <!-- Data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            <span id="showingEntries">Showing 1 to 10 of 24,331 entries</span>
+            <div class="pagination-buttons">
+                <a href="#" id="prevButton">Previous</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">...</a>
+                <a href="#">2434</a>
+                <a href="#" id="nextButton">Next</a>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
